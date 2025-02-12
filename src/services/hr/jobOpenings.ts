@@ -15,13 +15,14 @@ export const jobOpenings_service =async(
         }
 
         const newJobOpenings = jobOpeningsRepo.create({
+            branch,
             job_title,
             description,
             requirements,
             location,
             salary_range,
             closed_at
-        })
+        })  
 
         await jobOpeningsRepo.save(newJobOpenings)
 
@@ -41,7 +42,7 @@ export const jobOpeningUpdateService=async(
         throw new Error('jobOpening not found')
     }
 
-   await jobOpeningRepo.update(jobOpeningId,{
+   await jobOpeningRepo.update(jobOpeningId ,{
       job_title:job_title|| jobOpening.job_title,
       description:description|| jobOpening.description,
       requirements:requirements|| jobOpening.requirements,

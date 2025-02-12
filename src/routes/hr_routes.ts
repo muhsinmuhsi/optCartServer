@@ -1,5 +1,5 @@
 import express from 'express'
-import { addAttendance, create_jobOpenings, getAttendance, getAttendanceByUserId, getJobOpenings, getJobOpeningsById, getLeaveRequest, getLeaveRequestById, jobOpeningsDelete, updateAttendance, updateJobOpenings, updateLeaveRequest } from '../controllers/HR_controlls'
+import { addAttendance, addPayroll, create_jobOpenings, getAttendance, getAttendanceByUserId, getJobOpenings, getJobOpeningsById, getLeaveRequest, getLeaveRequestById, getPayroll, getPayrollById, jobOpeningsDelete, payrollDelete, updateAttendance, updateJobOpenings, updateLeaveRequest } from '../controllers/HR_controlls'
 
 
 const router=express.Router()
@@ -22,5 +22,13 @@ router.get('/attendance',getAttendanceByUserId);
 router.put('/leaveRequest/:leaveId',updateLeaveRequest)
 router.get('/leaveRequest',getLeaveRequest);
 router.get('/leaveRequest/:leaveId',getLeaveRequestById);
+
+//payrolls
+
+router.post('payrolls',addPayroll)
+router.put('payrolls',getPayroll)
+router.get('payrolls/:payroll_id',getPayrollById)
+router.delete('payrolls/:payrollId',payrollDelete)
+
 
 export default router

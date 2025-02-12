@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import {deleteJobOpeningsService, getJobOpeningsByIdService, getJobOpeningService, jobOpenings_service, jobOpeningUpdateService} from '../services/hr/jobOpenings';
 import { addAttendanceService, getAttendanceService, getAttendanceServiceByUserId, updateAttendanceService } from "../services/hr/attendance_service";
 import { getLeaveRequestByIdService, getLeaveRequestService, updateLeaveRequestService } from "../services/hr/leave_service";
+import { deletePayrollService, getPayrollByIdService, getPayrollService, postPayrollService } from "../services/hr/payrollService";
 
 export const create_jobOpenings = async (req:Request,res:Response) =>{
     const {branchId,job_title,description,requirements, location, salary_range,closed_at}=req.body
@@ -196,6 +197,79 @@ export const getLeaveRequestById=async(req:Request,res:Response)=>{
   
   
   }
+
+
+  //payroll controls
+
+
+  export const addPayroll=async(req:Request,res:Response)=>{
+    const {userId}=req.params;
+    const {salary_amount,bonuses,deductions,net_pay,payment_date,
+      tax_withheld,overtime_hours,overtime_pay,leave_deductions,remarks}=req.body;
+  
+  
+    if(!userId|| !salary_amount|| !bonuses|| !deductions|| !net_pay || !payment_date||
+      !tax_withheld || !overtime_hours || !overtime_pay || !leave_deductions || !remarks){
+        return res.status(400).json({message:'required field is missing'})
+      }
+  
+  
+    const result= await postPayrollService(userId,salary_amount,bonuses,deductions,net_pay,payment_date,
+      tax_withheld,overtime_hours,overtime_pay,leave_deductions,remarks)
+    if(!result){
+      return res.status(400).json({message:"failed to add attendance"})
+    }
+  
+  
+    res.status(201).json({data:result,message:'payroll added successfully'})
+
+  }
+
+  
+  
+  export const getPayroll=async(req:Request,res:Response)=>{
+
+
+    const result=await getPayrollService()
+    if(!result){
+      return res.status(400).json({message:'error to fetch payroll'})
+    }
+  
+    res.status(200).json({data:result,message:'payroll fetched success fully'})
+  
+  }
+
+
+
+  export const getPayrollById=async(req:Request,res:Response)=>{
+      const {payroll_id}=req.params;
+
+    const result=await getPayrollByIdService(payroll_id)
+    if(!result){
+      return res.status(400).json({message:'error to fetch payroll'})
+    }
+  
+    res.status(200).json({data:result,message:'payroll fetched success fully'})
+  
+  }
+
+
+  export const payrollDelete = async (req:Request,res:Response) =>{
+    const {payrollId}=req.params
+
+    const result= await deletePayrollService(payrollId);
+    if(!result){
+      return res.status(400).json({message:'payroll deleting failed'})
+    }
+
+    res.status(201).json(result)
+
+}
+
+
+
+
+  
   
 
 
